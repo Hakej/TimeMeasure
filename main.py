@@ -1,9 +1,9 @@
 import os
 import time
 import sys
-from datetime import datetime
+import datetime
 
-t = datetime.now()
+t = datetime.datetime.now()
 directory_name = "data"
 file_name = directory_name + "/" + t.strftime("%c") + '.txt'
 
@@ -24,6 +24,7 @@ current_idle_penalty = 0
 total_idle_penalty = 0
 
 start = time.time()
+total_time = 0
 
 try:
     while True:
@@ -42,14 +43,18 @@ try:
             current_idle_penalty = 0
 
         total_seconds = time.time() - start - total_idle_penalty - current_idle_penalty
+        total_time = datetime.timedelta(seconds=total_seconds)
 
-        print("Total seconds: ", total_seconds)
-        print("Idle seconds: ", idle_seconds)
+        print("Total time: ", total_time)
+
+        if not idle_detected:
+            print("Idle in: ", idle_threshold - idle_seconds)
 
         time.sleep(0.5)
 except KeyboardInterrupt:
     with open(file_name, 'w') as file:
-        file.write(str(total_seconds))
+        file.write(str(total_time))
+
         print()
-        print("Total time spend: ", total_seconds)
+        print("Total time spent: ", total_time)
         print("Time saved in: ", file_name)
