@@ -52,6 +52,9 @@ try:
 
         time.sleep(0.5)
 except KeyboardInterrupt:
+    if not os.path.exists(directory_name):
+        os.makedirs(directory_name)
+        
     with open(file_name, 'w') as file:
         file.write(str(total_time))
 
